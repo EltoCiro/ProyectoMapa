@@ -125,6 +125,8 @@ class MainActivity : AppCompatActivity() {
                 if (index != -1) {
                     lugarAdapter.setSelectedPosition(index)
                     mostrarCirculo(clickedMarker.position)
+                    // Hacer scroll en el RecyclerView para mostrar el elemento seleccionado
+                    recyclerView.smoothScrollToPosition(index)
                 }
                 true
             }

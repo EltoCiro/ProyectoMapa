@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -12,12 +13,40 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Mapa en la parte superior -->
+        <!-- SearchView para buscar lugares -->
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:queryHint="Buscar lugares..."
+            android:layout_margin="8dp"/>
+
+        <!-- Mapa -->
         <org.osmdroid.views.MapView
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Botón para mostrar/ocultar el RecyclerView -->
+        <Button
+            android:id="@+id/btnToggleRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mostrar/Ocultar Lugares"
+            android:textSize="16sp"
+            android:layout_margin="8dp"/>
+
+        <!-- Lista de lugares -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewLugares"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0"
+            android:visibility="gone"
+            android:background="@android:color/white"/>
 
         <!-- Botón para agregar nuevo lugar -->
         <Button
@@ -27,14 +56,5 @@
             android:text="+ Agregar Nuevo Lugar"
             android:textSize="16sp"
             android:layout_margin="8dp"/>
-
-        <!-- Lista de lugares -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewLugares"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@android:color/white"/>
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

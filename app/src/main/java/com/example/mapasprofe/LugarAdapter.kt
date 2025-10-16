@@ -38,7 +38,7 @@ class LugarAdapter(
         if (position == selectedPosition) {
             holder.itemView.setBackgroundColor(holder.itemView.context.getColor(R.color.selected_item))
         } else {
-            holder.itemView.setBackgroundColor(holder.itemView.context.getColor(android.R.color.transparent))
+            holder.itemView.setBackgroundColor(android.graphics.Color.TRANSPARENT)
         }
 
         holder.itemView.setOnClickListener {
@@ -58,17 +58,17 @@ class LugarAdapter(
         }
     }
 
-    override fun getItemCount() = lugares.size
+    override fun getItemCount(): Int = lugares.size
 
-    fun updateLugares(newLugares: MutableList<Lugar>) {
-        lugares = newLugares
+    fun updateLugares(newLugares: List<Lugar>) {
+        lugares = newLugares.toMutableList()
         if (selectedPosition >= lugares.size) {
             selectedPosition = if (lugares.isNotEmpty()) 0 else -1
         }
         notifyDataSetChanged()
     }
 
-    fun getSelectedPosition() = selectedPosition
+    fun getSelectedPosition(): Int = selectedPosition
 
     fun setSelectedPosition(position: Int) {
         val oldPosition = selectedPosition
@@ -77,4 +77,3 @@ class LugarAdapter(
         notifyItemChanged(selectedPosition)
     }
 }
-

@@ -21,6 +21,7 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polygon
 
 class MainActivity : AppCompatActivity() {
+    // Declaración de variables globales
     private lateinit var mapView: MapView
     private lateinit var recyclerView: RecyclerView
     private lateinit var btnAgregarLugar: Button
@@ -31,12 +32,14 @@ class MainActivity : AppCompatActivity() {
     private var lugares = mutableListOf<Lugar>()
     private var selectedCircle: Polygon? = null
 
+    // Método llamado al crear la actividad
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         Configuration.getInstance().load(this, getSharedPreferences("osmdroid", MODE_PRIVATE))
         setContentView(R.layout.activity_main)
 
+        // Configurar márgenes para las barras del sistema
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -65,10 +68,10 @@ class MainActivity : AppCompatActivity() {
             toggleRecyclerViewVisibility()
         }
 
-        // SIEMPRE inicializar las 19 ubicaciones del Campus Central al inicio
+        // Inicializar las 19 ubicaciones del Campus Central
         inicializarLugaresCampus()
 
-        // Cargar lugares (ya incluye las 19 ubicaciones + las personalizadas)
+        // Cargar lugares
         cargarLugares()
 
         // Configurar botón agregar
@@ -77,6 +80,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Configurar el mapa
     private fun setupMap() {
         mapView.setTileSource(TileSourceFactory.MAPNIK)
         mapView.setMultiTouchControls(true)
@@ -86,6 +90,7 @@ class MainActivity : AppCompatActivity() {
         mapView.controller.setCenter(campusCenter)
     }
 
+    // Configurar la barra de búsqueda
     private fun setupSearchView() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -107,6 +112,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    // Configurar el RecyclerView
     private fun setupRecyclerView() {
         lugarAdapter = LugarAdapter(
             lugares,
@@ -124,6 +130,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = lugarAdapter
     }
 
+    // Alternar visibilidad del RecyclerView
     private fun toggleRecyclerViewVisibility() {
         if (recyclerView.visibility == View.GONE) {
             recyclerView.visibility = View.VISIBLE
@@ -140,6 +147,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Cargar lugares desde el gestor de lugares
     private fun cargarLugares() {
         lugares.clear()
         lugares.addAll(lugaresManager.cargarLugares())
@@ -150,6 +158,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Actualizar marcadores en el mapa
     private fun actualizarMarcadores() {
         mapView.overlays.removeAll { it is Marker }
         lugares.forEach { lugar ->
@@ -177,6 +186,7 @@ class MainActivity : AppCompatActivity() {
         mapView.invalidate()
     }
 
+    // Mostrar un lugar en el mapa
     private fun mostrarLugarEnMapa(lugar: Lugar) {
         val point = GeoPoint(lugar.latitud, lugar.longitud)
         mapView.controller.animateTo(point)
@@ -184,6 +194,7 @@ class MainActivity : AppCompatActivity() {
         mostrarCirculo(point)
     }
 
+    // Mostrar un círculo en el mapa alrededor de un punto
     private fun mostrarCirculo(point: GeoPoint) {
         selectedCircle?.let { mapView.overlays.remove(it) }
         selectedCircle = Polygon().apply {
@@ -196,6 +207,7 @@ class MainActivity : AppCompatActivity() {
         mapView.invalidate()
     }
 
+    // Mostrar diálogo para agregar un lugar
     private fun mostrarDialogoAgregarLugar() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_lugar, null)
         val etTitulo = dialogView.findViewById<android.widget.EditText>(R.id.etTitulo)
@@ -229,6 +241,7 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+    // Mostrar diálogo para editar un lugar
     private fun mostrarDialogoEditarLugar(lugar: Lugar) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_lugar, null)
         val etTitulo = dialogView.findViewById<android.widget.EditText>(R.id.etTitulo)
@@ -263,6 +276,7 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+    // Mostrar diálogo para eliminar un lugar
     private fun mostrarDialogoEliminar(lugar: Lugar) {
         AlertDialog.Builder(this)
             .setTitle("Eliminar Lugar")
@@ -276,6 +290,7 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+    // Inicializar lugares del campus
     private fun inicializarLugaresCampus() {
         val sharedPrefs = getSharedPreferences("campus_init", MODE_PRIVATE)
         val yaInicializado = sharedPrefs.getBoolean("inicializado", false)
@@ -314,6 +329,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Métodos del ciclo de vida de la actividad
     override fun onResume() {
         super.onResume()
         mapView.onResume()
